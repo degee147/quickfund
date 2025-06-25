@@ -68,4 +68,8 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Loan::class);
     }
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
 }

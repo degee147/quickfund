@@ -6,6 +6,7 @@ use App\Models\Loan;
 use App\Jobs\ScoreLoanJob;
 use Illuminate\Http\Request;
 use App\Jobs\ProcessLoanScoring;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Queue;
 
 class LoanController extends Controller
@@ -67,6 +68,19 @@ class LoanController extends Controller
         return response()->json([
             'message' => 'Loan scoring has been queued.',
             'loan_id' => $loan->id
+        ]);
+    }
+
+    public function notifications(Request $request)
+    {
+        $user = Auth::user();
+
+        $notifications = $user->notifications()
+            ->latest()
+            ->paginate(15);
+
+        return response()->json([
+            'data' => $notifications
         ]);
     }
 

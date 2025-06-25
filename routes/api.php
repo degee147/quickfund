@@ -21,6 +21,7 @@ Route::middleware('auth:api')->group(function () {
 
 
     Route::post('/loans', [LoanController::class, 'store']);
+    Route::get('/notifications', [LoanController::class, 'notifications']);
 });
 
 Route::prefix('admin')
