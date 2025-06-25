@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LoanController;
 use App\Http\Controllers\API\AuthController;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
@@ -15,5 +16,8 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:api')->group(function () {
     Route::post('/refresh', [AuthController::class, 'refresh']);
     Route::post('/logout', [AuthController::class, 'logout']);
+
+
+    Route::post('/loans', [LoanController::class, 'store']);
 });
 
