@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoanController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\RepaymentController;
 use App\Http\Controllers\Admin\LoanApprovalController;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
@@ -22,6 +23,9 @@ Route::middleware('auth:api')->group(function () {
 
     Route::post('/loans', [LoanController::class, 'store']);
     Route::get('/notifications', [LoanController::class, 'notifications']);
+
+
+    Route::post('/repayments/simulate', [RepaymentController::class, 'simulate']);
 });
 
 Route::prefix('admin')
