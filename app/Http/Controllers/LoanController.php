@@ -48,7 +48,8 @@ class LoanController extends Controller
             'status' => 'pending',
         ]);
 
-        // ScoreLoanJob::dispatch($loan); //autoscoring
+        //autoscoring
+        Queue::push(new ProcessLoanScoring($loan));
 
         return response()->json([
             'message' => 'Loan submitted successfully',
