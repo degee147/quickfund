@@ -59,4 +59,18 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'Logged out']);
     }
+
+    public function refresh()
+    {
+        try {
+            $newToken = JWTAuth::refresh(JWTAuth::getToken());
+
+            return response()->json([
+                'token' => $newToken,
+                'user' => auth()->user()
+            ]);
+        } catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
+            return response()->json(['message' => 'Token is invalid'], 401);
+        }
+    }
 }
