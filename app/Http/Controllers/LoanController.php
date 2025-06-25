@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Loan;
+use App\Jobs\ScoreLoanJob;
 use Illuminate\Http\Request;
 
 class LoanController extends Controller
@@ -32,7 +33,7 @@ class LoanController extends Controller
         $request->validate([
             'amount' => 'required|numeric|min:1000',
             'reason' => 'required|string|max:255',
-            'duration' => 'required|integer|min:1',
+            'duration' => 'required|integer|min:1', // e.g., in months
         ]);
 
 
@@ -41,7 +42,9 @@ class LoanController extends Controller
             'amount' => $request->amount,
             'reason' => $request->reason,
             'duration' => $request->duration,
+            'status' => 'pending',
         ]);
+        ScoreLoanJob::dispatch($loan);
         return response()->json([
             'message' => 'Loan submitted successfully',
             'loan' => $loan
