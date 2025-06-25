@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Loan;
+use App\Models\Notification;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -34,6 +35,23 @@ class ScoreLoanJob implements ShouldQueue
             'score' => $score,
             'status' => $status,
             'scored_at' => now(),
+        ]);
+
+        // Trigger notification log
+        $user = $this->loan->user;
+
+        $message = "Hi {$user->name}, your loan has been {$status}. Score: {$score}.";
+
+        Notification::create([
+            'user_id' => $user->id,
+            'type' => 'email',
+            'message' => $message,
+        ]);
+
+        Notification::create([
+            'user_id' => $user->id,
+            'type' => 'sms',
+            'message' => $message,
         ]);
     }
 }
