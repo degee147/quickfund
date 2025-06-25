@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Loan;
 use App\Jobs\ScoreLoanJob;
 use Illuminate\Http\Request;
+use App\Jobs\ProcessLoanScoring;
+use Illuminate\Support\Facades\Queue;
 
 class LoanController extends Controller
 {
@@ -44,11 +46,28 @@ class LoanController extends Controller
             'duration' => $request->duration,
             'status' => 'pending',
         ]);
-        ScoreLoanJob::dispatch($loan);
+
+        // ScoreLoanJob::dispatch($loan); //autoscoring
+
         return response()->json([
             'message' => 'Loan submitted successfully',
             'loan' => $loan
         ], 201);
+    }
+
+    public function score(Request $request, Loan $loan)
+    {
+        if (($loan->status !== 'pending') or !empty('scored_at')) {
+            return response()->json(['message' => 'Loan already scored or processed.'], 400);
+        }
+
+        // Dispatch job to queue
+        Queue::push(new ProcessLoanScoring($loan));
+
+        return response()->json([
+            'message' => 'Loan scoring has been queued.',
+            'loan_id' => $loan->id
+        ]);
     }
 
     /**

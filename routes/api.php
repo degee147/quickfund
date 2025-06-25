@@ -26,6 +26,7 @@ Route::middleware('auth:api')->group(function () {
 Route::prefix('admin')
     ->middleware([AdminMiddleware::class])
     ->group(function () {
+        Route::post('/loans/{loan}/score', [LoanController::class, 'score']);
         Route::patch('/loans/{loan}/approve', [LoanApprovalController::class, 'approve']);
         Route::patch('/loans/{loan}/reject', [LoanApprovalController::class, 'reject']);
     });
