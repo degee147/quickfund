@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->decimal('amount', 15, 2);
             $table->string('reason');
             $table->integer('duration'); // in days
-            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->enum('status', ['pending', 'approved', 'rejected', 'repaid'])->default('pending');
             $table->string('score')->nullable(); // mock score: high, low, etc.
             $table->timestamps();
         });
