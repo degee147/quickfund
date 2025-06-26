@@ -35,6 +35,7 @@ class LoanController extends Controller
 
     public function repay(Request $request, Loan $loan): JsonResponse
     {
+        // dd(['auth_id' => Auth::id(), 'loan id' => $loan->id]);
         // Authorization: Only loan owner or admin can simulate repayment
         if (Auth::id() !== $loan->user_id && Auth::user()->role !== 'admin') {
             abort(403, 'Unauthorized');
