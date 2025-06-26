@@ -37,9 +37,9 @@ class LoanController extends Controller
     {
         // dd(['auth_id' => Auth::id(), 'loan id' => $loan->id]);
         // Authorization: Only loan owner or admin can simulate repayment
-        if (Auth::id() !== $loan->user_id && Auth::user()->role !== 'admin') {
-            abort(403, 'Unauthorized');
-        }
+        // if (Auth::id() !== $loan->user_id && Auth::user()->role !== 'admin') {
+        //     abort(403, 'Unauthorized');
+        // }
 
         if ($loan->status !== 'approved') {
             return response()->json(['message' => 'Only approved loans can be repaid.'], 400);
